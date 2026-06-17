@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bah Nourdine · IT & Networks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080F1E;
+      --surface: #0E1929;
+      --surface-2: #142238;
+      --accent: #2B7FFF;
+      --accent-dim: rgba(43,127,255,0.1);
+      --accent-border: rgba(43,127,255,0.18);
+      --cta: #FFB703;
+      --text: #DDE8FF;
+      --text-muted: #6B82A0;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 5vw;
+      background: rgba(8,15,30,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--accent-border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--cta) !important;
+      color: #080F1E !important;
+      padding: 0.45rem 1.1rem !important;
+      border-radius: 4px;
+      font-weight: 600 !important;
+      font-family: var(--font-display) !important;
+      font-size: 0.8rem !important;
+      letter-spacing: 0 !important;
+      transition: opacity 0.2s !important;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0 5vw;
+      padding-top: 80px;
+      overflow: hidden;
+    }
+
+    #network-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.3;
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 22px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5vw, 4.8rem);
+      font-weight: 700;
+      line-height: 1.03;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .hero-name .accent { color: var(--accent); }
+
+    .hero-role {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-desc {
+      font-size: 0.97rem;
+      color: var(--text-muted);
+      max-width: 400px;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .btn-primary {
+      background: var(--cta);
+      color: #080F1E;
+      padding: 0.75rem 1.75rem;
+      border-radius: 4px;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .btn-secondary {
+      color: var(--text);
+      padding: 0.75rem 1.75rem;
+      border-radius: 4px;
+      border: 1px solid var(--accent-border);
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); background: var(--accent-dim); }
+
+    .location-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+    .location-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--cta);
+      animation: pulse-dot 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.25; }
+    }
+
+    .hero-cards {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1.25rem;
+    }
+
+    .stat-card {
+      background: rgba(14,25,41,0.85);
+      border: 1px solid var(--accent-border);
+      border-radius: 8px;
+      padding: 1.2rem 1.75rem;
+      text-align: right;
+      min-width: 195px;
+      backdrop-filter: blur(8px);
+    }
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.67rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+
+    /* ── SHARED SECTION ── */
+    section {
+      padding: 5.5rem 5vw;
+    }
+    .section-header {
+      margin-bottom: 3rem;
+    }
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 0.65rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    /* ── SERVICES ── */
+    #services { background: var(--surface); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .service-card {
+      background: var(--bg);
+      border: 1px solid var(--accent-border);
+      border-radius: 10px;
+      padding: 2rem 1.75rem;
+      transition: border-color 0.25s, transform 0.25s;
+      cursor: default;
+    }
+    .service-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .service-icon { font-size: 1.65rem; margin-bottom: 1.2rem; display: block; }
+    .service-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.55rem;
+      letter-spacing: -0.015em;
+    }
+    .service-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--bg); }
+
+    .skills-categories { display: flex; flex-direction: column; gap: 2rem; }
+
+    .skill-group-label {
+      font-family: var(--font-mono);
+      font-size: 0.67rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.65rem;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--accent-border);
+      border-radius: 4px;
+      padding: 0.35rem 0.85rem;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .skill-tag:hover { background: var(--accent-dim); border-color: var(--accent); }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--surface); }
+
+    .timeline { display: flex; flex-direction: column; max-width: 680px; }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 110px 1px 1fr;
+      gap: 0 1.5rem;
+      padding-bottom: 2.75rem;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    .timeline-date {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-align: right;
+      padding-top: 0.15rem;
+    }
+
+    .timeline-line {
+      position: relative;
+      background: var(--accent-border);
+    }
+    .timeline-line::before {
+      content: '';
+      position: absolute;
+      top: 5px; left: 50%;
+      transform: translateX(-50%);
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+    }
+
+    .timeline-role {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+      letter-spacing: -0.01em;
+    }
+    .timeline-org {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.55rem;
+    }
+    .timeline-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--bg);
+      text-align: center;
+    }
+    .contact-inner { max-width: 540px; margin: 0 auto; }
+    .contact-inner .section-eyebrow { display: block; }
+    .contact-sub {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin: 1rem 0 2.5rem;
+      line-height: 1.75;
+    }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border: 1px solid var(--accent-border);
+      padding: 0.55rem 1.1rem;
+      border-radius: 4px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .contact-link:hover { color: var(--text); border-color: var(--accent); }
+    .contact-cta {
+      display: inline-block;
+      background: var(--cta);
+      color: #080F1E;
+      padding: 0.9rem 2.5rem;
+      border-radius: 4px;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .contact-cta:hover { opacity: 0.85; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--accent-border);
+      padding: 1.75rem 5vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      #hero { grid-template-columns: 1fr; padding-top: 100px; gap: 3rem; }
+      .hero-cards { flex-direction: row; align-items: flex-start; flex-wrap: wrap; }
+      .stat-card { text-align: left; min-width: 140px; flex: 1; }
+      .nav-links { display: none; }
+      .timeline-item { grid-template-columns: 80px 1px 1fr; gap: 0 1rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #network-canvas { display: none; }
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Bah <span>Nourdine</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact" class="nav-cta">Hire Me</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="network-canvas"></canvas>
+
+  <div class="hero-text">
+    <div class="hero-eyebrow">Available for work</div>
+    <h1 class="hero-name">Bah<br><span class="accent">Nourdine</span></h1>
+    <p class="hero-role">IT & Networks Technician</p>
+    <p class="hero-desc">
+      Connecting infrastructure, solving technical problems, and building reliable networks for businesses in Mauritania and beyond.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Get in Touch</a>
+      <a href="#services" class="btn-secondary">View Services</a>
+    </div>
+    <div class="location-badge">
+      <span class="location-dot"></span>
+      Nouakchott, Mauritania
+    </div>
+  </div>
+
+  <div class="hero-cards">
+    <div class="stat-card">
+      <div class="stat-number">BTS</div>
+      <div class="stat-label">Télécommunications & Réseaux</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">3+</div>
+      <div class="stat-label">Internship Programs</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Core Service Areas</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header">
+    <div class="section-eyebrow">What I offer</div>
+    <h2 class="section-title">Services</h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">🔧</span>
+      <div class="service-title">IT Support & Maintenance</div>
+      <p class="service-desc">Hardware diagnosis, software installation, system troubleshooting, and ongoing technical support for businesses and individuals.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🌐</span>
+      <div class="service-title">Network Installation</div>
+      <p class="service-desc">LAN/WAN setup, router and switch configuration, structured cabling, and WiFi deployment for offices and enterprises.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📡</span>
+      <div class="service-title">Telecom Consulting</div>
+      <p class="service-desc">Satellite and fiber optics guidance, network planning, signal analysis, and telecom infrastructure auditing.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">✍️</span>
+      <div class="service-title">Digital Content & AI</div>
+      <p class="service-desc">AI-powered content writing and social media management to grow your business's online presence effectively.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <div class="section-eyebrow">Technical stack</div>
+    <h2 class="section-title">Skills</h2>
+  </div>
+  <div class="skills-categories">
+    <div>
+      <div class="skill-group-label">Networking & Telecom</div>
+      <div class="skill-tags">
+        <span class="skill-tag">TCP/IP</span>
+        <span class="skill-tag">LAN / WAN</span>
+        <span class="skill-tag">Fiber Optics</span>
+        <span class="skill-tag">Satellite Telecom</span>
+        <span class="skill-tag">FTTH / FTTX</span>
+        <span class="skill-tag">VLANs</span>
+        <span class="skill-tag">OSPF / RIP</span>
+        <span class="skill-tag">PDH Multiplexing</span>
+      </div>
+    </div>
+    <div>
+      <div class="skill-group-label">Hardware & Systems</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Cisco Routers</span>
+        <span class="skill-tag">Huawei Devices</span>
+        <span class="skill-tag">Structured Cabling</span>
+        <span class="skill-tag">Windows / Linux</span>
+        <span class="skill-tag">Hardware Repair</span>
+      </div>
+    </div>
+    <div>
+      <div class="skill-group-label">Tools & Software</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Matlab / Simulink</span>
+        <span class="skill-tag">Packet Tracer</span>
+        <span class="skill-tag">Microsoft Office</span>
+        <span class="skill-tag">Microsoft Access</span>
+      </div>
+    </div>
+    <div>
+      <div class="skill-group-label">Languages</div>
+      <div class="skill-tags">
+        <span class="skill-tag">French</span>
+        <span class="skill-tag">Arabic</span>
+        <span class="skill-tag">English</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header">
+    <div class="section-eyebrow">Background</div>
+    <h2 class="section-title">Experience</h2>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">2024 – now</div>
+      <div class="timeline-line"></div>
+      <div class="timeline-content">
+        <div class="timeline-role">BTS Student — Télécommunications & Réseaux</div>
+        <div class="timeline-org">Mauritania</div>
+        <p class="timeline-desc">Specializing in telecom systems, fiber optics, satellite communications, and network infrastructure. End-of-studies thesis on AM/FM modulation simulation using Matlab/Simulink.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2023</div>
+      <div class="timeline-line"></div>
+      <div class="timeline-content">
+        <div class="timeline-role">IT Maintenance Internship</div>
+        <div class="timeline-org">Technical Organization, Nouakchott</div>
+        <p class="timeline-desc">Hands-on hardware and software maintenance, troubleshooting workstations, and supporting internal IT operations.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2022</div>
+      <div class="timeline-line"></div>
+      <div class="timeline-content">
+        <div class="timeline-role">Technical Support Internship</div>
+        <div class="timeline-org">Nouakchott, Mauritania</div>
+        <p class="timeline-desc">Provided first-line technical support, assisted with network configuration, and performed system diagnostics for end users.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-eyebrow">Ready to work together</div>
+    <h2 class="section-title">Let's connect</h2>
+    <p class="contact-sub">
+      Need network setup, IT support, or a reliable tech partner for your business? I'm available and ready to help.
+    </p>
+    <div class="contact-links">
+      <a href="https://www.linkedin.com/in/ba-nourdine-taleb-sidi-508462401" class="contact-link" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/B00867" class="contact-link" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="mailto:bahsidi007@gmail.com" class="contact-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        Email
+      </a>
+    </div>
+    <a href="mailto:bahsidi007@gmail.com" class="contact-cta">Start a project →</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Bah Nourdine</span>
+  <span>IT & Networks · Nouakchott, Mauritania</span>
+</footer>
+
+<script>
+  const canvas = document.getElementById('network-canvas');
+  const ctx = canvas.getContext('2d');
+  let nodes = [];
+  const NODE_COUNT = 45;
+  const MAX_DIST = 150;
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+
+  function initNodes() {
+    nodes = [];
+    for (let i = 0; i < NODE_COUNT; i++) {
+      nodes.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: Math.random() * 2 + 1,
+        pulse: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    nodes.forEach(n => {
+      n.x += n.vx;
+      n.y += n.vy;
+      n.pulse += 0.018;
+      if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+      if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+    });
+
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MAX_DIST) {
+          const alpha = (1 - dist / MAX_DIST) * 0.55;
+          ctx.strokeStyle = `rgba(43,127,255,${alpha})`;
+          ctx.lineWidth = 0.75;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    nodes.forEach(n => {
+      const glow = (Math.sin(n.pulse) + 1) / 2;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(43,127,255,${0.45 + glow * 0.55})`;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  initNodes();
+  draw();
+  window.addEventListener('resize', () => { resize(); initNodes(); });
+</script>
+</body>
+</html>
